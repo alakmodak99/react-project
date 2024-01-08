@@ -1,24 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import { getAPIData } from "./services";
+import ImageContainer from "./components/ImageContainer";
+import Loader from "./components/Loader";
+import { useDispatch, useSelector } from "react-redux";
+import { AddImageData } from "./services/Redux/action";
 
 function App() {
+  const [loading, setLoading] = useState<boolean>(false);
+  const dispatch = useDispatch();
+    const imageData = useSelector((store: any) => store?.image_data?.data);
+  const getImages = async () => {
+    try {
+      setLoading(true);
+      const resp = await getAPIData({
+        url: "v2/list",
+      });
+      dispatch(AddImageData(resp?.data));
+    } catch (err) {
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    if (!imageData?.length) {
+      getImages();
+    }
+  }, []);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {loading && <Loader />}
+      <ImageContainer />
     </div>
   );
 }
