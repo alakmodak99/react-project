@@ -1,5 +1,5 @@
 # Use an official Node.js image as the base image
-FROM node:18
+FROM jenkins/jenkins:lts-jdk11-with-nodejs
 
 # Set the working directory in the container
 WORKDIR /app
