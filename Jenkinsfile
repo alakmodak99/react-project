@@ -17,5 +17,10 @@ pipeline {
         sh 'npm run build'
       }
     }
+    stage ('Build-Image') {
+      steps {
+        sh 'docker build -t my-react-project:3.0.1 .'
+      }
+    }
   }
 }
