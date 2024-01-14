@@ -8,9 +8,7 @@ pipeline {
     }
     stage ('test') {
       steps {
-        sh 'apk add node' 
-        sh 'apk add npm'
-        sh 'npm install'
+        sh 'sudo apt npm install'
         sh 'npm test'
       }
     }
